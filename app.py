@@ -69,13 +69,14 @@ def calc_stock(num_holds, stocks, ratio, portfolio):
 def layout_input(sharpe, stocks, ratio, portfolio):
     num_holds = {}
     for t in ratio.ticker:
-        num_holds[t] = st.text_input(t, "0", key=t)
+        num_holds[t] = st.number_input(t, 0, key=t)
     num_holds = {k: float(v) for k, v in num_holds.items()}
     if st.button("Calculate"):
         sharpe, stocks, ratio = calc_stock(num_holds, stocks, ratio, portfolio)
     return sharpe, stocks, ratio
 
 
+@st.cache
 def read_stock_data_from_local():
     stocks = pd.read_pickle("data/stocks.pkl")
     ratio = pd.read_pickle("data/ratio.pkl")
@@ -138,8 +139,6 @@ def layout_plots(sharpe, stocks, ratio) -> None:
         values="ratio_percent",
         title="Portfolio Recent Value Ratio",
     )
-    fig.update_xaxes(showgrid=False, zeroline=False)
-    fig.update_yaxes(showgrid=False, zeroline=False)
     st.plotly_chart(fig, use_container_width=True)
 
     # table for each stock stat
@@ -176,16 +175,20 @@ def layout_plots(sharpe, stocks, ratio) -> None:
 
 
 if __name__ == "__main__":
+    # data loader #
+    # load sharpe, stocks, and ratio pickles
+    sharpe, stocks, ratio = read_stock_data_from_local()
+
+    # load portfolio settings
+    with open("portfolio.yaml", "rb") as file:
+        portfolio = yaml.safe_load(file)
+
+    # layout #
     # general layout settings
     st.set_page_config(layout="wide")
     st.title("ETF Portfolio Simulator")
 
-    # read stocks and portfolio
-    sharpe, stocks, ratio = read_stock_data_from_local()
-
-    with open("portfolio.yaml", "rb") as file:
-        portfolio = yaml.safe_load(file)
-
+    # layout sidebar
     with st.sidebar:
         st.write("Input Portfolio To Simulate")
         sharpe, stocks, ratio = layout_input(sharpe, stocks, ratio, portfolio)
