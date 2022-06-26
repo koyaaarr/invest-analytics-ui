@@ -175,18 +175,17 @@ def layout_plots(sharpe, stocks, ratio) -> None:
 
 
 if __name__ == "__main__":
-    # data loader #
+
+    # general layout settings
+    st.set_page_config(layout="wide")
+    st.title("ETF Portfolio Simulator")
+
     # load sharpe, stocks, and ratio pickles
     sharpe, stocks, ratio = read_stock_data_from_local()
 
     # load portfolio settings
     with open("portfolio.yaml", "rb") as file:
         portfolio = yaml.safe_load(file)
-
-    # layout #
-    # general layout settings
-    st.set_page_config(layout="wide")
-    st.title("ETF Portfolio Simulator")
 
     # layout sidebar
     with st.sidebar:
