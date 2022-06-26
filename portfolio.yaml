@@ -1,0 +1,33 @@
+ticker:
+  BND:
+    detail: VANGUARD TOTAL BOND MARKET ETF
+    type: bond
+    sector: none
+  BTC-USD:
+    detail: Bitcoin / USD
+    type: cripto
+    sector: none
+  ETH-USD:
+    detail: Etherium / USD
+    type: cripto
+    sector: none
+  VEA:
+    detail: VANGUARD FTSE DEVELOPED MARKETS ETF
+    type: stock
+    sector: none
+  VOO:
+    detail: VANGUARD S&P 500 ETF
+    type: stock
+    sector: none
+  VTI:
+    detail: VANGUARD TOTAL STOCK MARKET ETF
+    type: stock
+    sector: none
+  VWO:
+    detail: VANGUARD FTSE EMERGING MARKETS ETF
+    type: stock
+    sector: none
+  QQQ:
+    detail: Invesco QQQ ETF
+    type: stock
+    sector: IT

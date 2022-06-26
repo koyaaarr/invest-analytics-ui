@@ -1,0 +1,43 @@
+ticker:
+  VOO:
+    source: 'stooq'
+  VWO:
+    source: 'stooq'
+  VEA:
+    source: 'stooq'
+  VTI:
+    source: 'stooq'
+  BND:
+    source: 'stooq'
+  BTC-USD:
+    source: 'yahoo'
+  ETH-USD:
+    source: 'yahoo'
+  DBA:
+    source: 'stooq'
+  USO:
+    source: 'stooq'
+  QQQ:
+    source: 'stooq'
+  VGT:
+    source: 'stooq'
+  VHT:
+    source: 'stooq'
+  VCR:
+    source: 'stooq'
+  XLC:
+    source: 'stooq'
+  VFH:
+    source: 'stooq'
+  XLI:
+    source: 'stooq'
+  VDC:
+    source: 'stooq'
+  VPU:
+    source: 'stooq'
+  XLB:
+    source: 'stooq'
+  XLRE:
+    source: 'stooq'
+  XLE:
+    source: 'stooq'
