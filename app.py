@@ -34,22 +34,26 @@ def calc_stock(num_holds, stocks, ratio, portfolio):
     )
     # recent value percent
     recent_values = []
+    recent_ratios = []
     for k in portfolio["ticker"].keys():
-        recent = (
-            stocks.loc[recent_valid_index, f"Close_{k}"]
-            * num_holds[k]
-            / stocks.loc[recent_valid_index, "Close_Portfolio"]
-            * 100
-        )
-        recent = round(recent, 2)
-        recent_values.append(recent)
+        value = stocks.loc[recent_valid_index, f"Close_{k}"] * num_holds[k]
+        ratio = value / stocks.loc[recent_valid_index, "Close_Portfolio"] * 100
+        value = round(value, 2)
+        ratio = round(ratio, 2)
+        recent_values.append(value)
+        recent_ratios.append(ratio)
     ratio = pd.DataFrame(
-        data={"ticker": portfolio["ticker"].keys(), "ratio_percent": recent_values}
+        data={
+            "ticker": portfolio["ticker"].keys(),
+            "latest_value_sum": recent_values,
+            "ratio_percent": recent_ratios,
+        }
     )
     ratio["type"] = ratio.ticker.apply(lambda x: portfolio["ticker"][x]["type"])
     ratio["detail"] = ratio.ticker.apply(lambda x: portfolio["ticker"][x]["detail"])
     ratio["sector"] = ratio.ticker.apply(lambda x: portfolio["ticker"][x]["sector"])
     ratio["num_holds"] = ratio.ticker.apply(lambda x: num_holds[x])
+    ratio["latest_value"] = ratio.latest_value_sum / ratio.num_holds
 
     # calc sharpe ratio
     sharpe = stocks.loc[:, ["Date", "Close_Portfolio"]]
@@ -89,6 +93,8 @@ def plot_stock_data(df: pd.DataFrame, window: int, x: str, y: str, title: str) -
     # drop nan values
     df = df.dropna(subset=y)
     df = df.tail(window)
+    if window > 400:
+        df = df[::2]
     fig = px.line(df, x=x, y=y)
     fig.update_xaxes(showgrid=False, zeroline=False)
     fig.update_yaxes(showgrid=False, zeroline=False)
@@ -126,7 +132,9 @@ def layout_plots(sharpe, stocks, ratio) -> None:
 
     # plot sharpe ratio
     st.write("Portfolio Annual Sharpe Ratio (Baseline = 1)")
-    fig = px.line(sharpe, x="Date", y="sharpe_ratio_annual")
+    fig = px.line(
+        sharpe.tail(st.session_state.window_size), x="Date", y="sharpe_ratio_annual"
+    )
     fig.add_hline(1, line_color="red")
     fig.update_xaxes(showgrid=False, zeroline=False)
     fig.update_yaxes(showgrid=False, zeroline=False)
@@ -145,7 +153,17 @@ def layout_plots(sharpe, stocks, ratio) -> None:
     st.write("Portfolio Detail")
     st.table(
         ratio.loc[
-            :, ["ticker", "detail", "type", "sector", "num_holds", "ratio_percent"]
+            :,
+            [
+                "ticker",
+                "detail",
+                "type",
+                "sector",
+                "num_holds",
+                "latest_value",
+                "latest_value_sum",
+                "ratio_percent",
+            ],
         ]
     )
 
