@@ -80,7 +80,8 @@ def layout_input(sharpe, stocks, ratio, portfolio):
     return sharpe, stocks, ratio
 
 
-@st.cache
+# comment off cache to avoid warning at streamlit cloud
+# @st.cache
 def read_stock_data_from_local():
     stocks = pd.read_pickle("data/stocks.pkl")
     ratio = pd.read_pickle("data/ratio.pkl")
