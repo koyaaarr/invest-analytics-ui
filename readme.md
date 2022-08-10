@@ -1,2 +1,2 @@
-this repository is the sample of the following article.
-https://koyaaarr.medium.com/python-development-setup-for-data-scientists-2022-7f80b2018402
+#### this repository is the sample of the following article.
+https://medium.com/@koyaaarr/python-streamlit-in-practice-a-use-case-of-visualizing-stock-data-20ec1e1c8478
